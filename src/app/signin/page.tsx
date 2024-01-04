@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { getProviders, signIn } from "next-auth/react";
+import Link from "next/link";
 
 function SignInPage() {
   const [providers, setProviders] = useState(null);
@@ -35,6 +36,10 @@ function SignInPage() {
       >
         google login
       </button>
+
+      <Link href="/">
+        <div className='w-[350px] first-line:text-[14px] pt-[20px]'>뒤로가기</div>
+      </Link>
     </div>
   )
 }
