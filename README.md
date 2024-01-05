@@ -1,4 +1,4 @@
-# artiq
+# Artiq
 
 art + unique
 

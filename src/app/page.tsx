@@ -1,9 +1,21 @@
 'use client'
 import Link from 'next/link'
 import { useSession, signOut } from "next-auth/react";
+import { supabase } from 'src/lib/supabase/client'
+import { useEffect } from 'react'
 
 export default function Home() {
   const { data: session } = useSession();
+
+  useEffect(() => {
+		// supabase
+		// 	.from('messages')
+		// 	.select()
+		// 	.then(({ data }) => {
+    //     console.log(data)
+		// 	})
+    console.log('supabase:', supabase)
+	}, [])
 
   return (
     <div className="p-20 flex flex-col items-center">
