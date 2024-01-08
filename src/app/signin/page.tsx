@@ -1,24 +1,24 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { getProviders, signIn } from "next-auth/react";
-import Link from "next/link";
+'use client'
+
+import React, { useEffect, useState } from 'react'
+import { getProviders, signIn } from 'next-auth/react'
+import Link from 'next/link'
 
 function SignInPage() {
-  const [providers, setProviders] = useState(null);
+  const [providers, setProviders] = useState(null)
 
   useEffect(() => {
     (async () => {
-      const res: any = await getProviders();
-      console.log(res);
-      setProviders(res);
-    })();
-  }, []);
+      const res: any = await getProviders()
+      setProviders(res)
+    })()
+  }, [])
 
   return (
     <div className="p-20 flex flex-col items-center">
       <button
         className="w-[350px] h-[46px] font-medium transform rounded-md bg-[#03C95B] tracking-wide text-white transition-colors duration-200 hover:opacity-80 focus:opacity-85 focus:outline-none"
-        onClick={() => signIn("naver", { redirect: true, callbackUrl: "/" })}
+        onClick={() => signIn('naver', { redirect: true, callbackUrl: '/' })}
       >
         naver login
       </button>
@@ -32,13 +32,13 @@ function SignInPage() {
 
       <button
         className="border-[1px] border-[#e5e5e5] w-[350px] h-[46px] mt-3 font-medium transform rounded-md bg-white tracking-wide text-[#383838] transition-colors duration-200 hover:opacity-80 focus:opacity-85 focus:outline-none"
-        onClick={() => signIn("google", { redirect: true, callbackUrl: "/" })}
+        onClick={() => signIn('google', { redirect: true, callbackUrl: '/' })}
       >
         google login
       </button>
 
       <Link href="/">
-        <div className='w-[350px] first-line:text-[14px] pt-[20px]'>뒤로가기</div>
+        <div className="w-[350px] first-line:text-[14px] pt-[20px]">뒤로가기</div>
       </Link>
     </div>
   )

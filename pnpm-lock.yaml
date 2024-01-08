@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@supabase/supabase-js': ^2.39.2
-  '@tata-v/eslint-config-react': ^1.0.14
+  '@tata-v/eslint-config-react': ^1.0.17
   '@types/node': ^20
   '@types/react': ^18
   '@types/react-dom': ^18
@@ -39,7 +39,7 @@ dependencies:
   react-quill: 2.0.0_biqbaboplfbrettd7655fr4n2y
 
 devDependencies:
-  '@tata-v/eslint-config-react': 1.0.14_wrdc56otgcis5mvdwroa3knsju
+  '@tata-v/eslint-config-react': 1.0.17_wrdc56otgcis5mvdwroa3knsju
   '@types/node': 20.10.6
   '@types/react': 18.2.46
   '@types/react-dom': 18.2.18
@@ -1042,8 +1042,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@tata-v/eslint-config-react/1.0.14_wrdc56otgcis5mvdwroa3knsju:
-    resolution: {integrity: sha512-wEvaK1g+koqboMA1YnXN8iS7hfvkZPF+AtHRwNDo6/4mUTWLrhRSTb9COiY6Kr1nawtW517nsFe2JwJvwFqMQw==}
+  /@tata-v/eslint-config-react/1.0.17_wrdc56otgcis5mvdwroa3knsju:
+    resolution: {integrity: sha512-0LLeGWn7rrK7DxleDLB1Fa1le0PluOmkXY6KP34j5OZ9tw4ceLKSqeRmwz7vD5CmOlySH53xcdOrw/m1+DCdpw==}
     dependencies:
       eslint-config-airbnb: 19.0.4_5xixws3m7nk6vkx7keji2g5lme
       eslint-plugin-import: 2.29.1_wrdc56otgcis5mvdwroa3knsju
