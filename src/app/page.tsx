@@ -4,10 +4,13 @@ import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
+import {
+  Card, CardHeader, CardBody, Image as ImageUi, CardFooter, Button,
+} from '@nextui-org/react'
 
 export default function Home() {
   const { data: session } = useSession()
-  const DynamicEditor = dynamic(() => import('src/components/common/Editor'), {
+  const Editor = dynamic(() => import('src/components/common/Editor'), {
     ssr: false,
   })
 
@@ -35,8 +38,46 @@ export default function Home() {
         )}
 
       <div className="w-[700px] h-[450px] mt-10">
-        <DynamicEditor />
+        <Editor />
       </div>
+
+      {/* nextUI */}
+      <Card className="py-4">
+        <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+          <p className="text-tiny uppercase font-bold">Daily Mix</p>
+          <small className="text-default-500">12 Tracks</small>
+          <h4 className="font-bold text-large">Frontend Radio</h4>
+        </CardHeader>
+        <CardBody className="overflow-visible py-2">
+          <ImageUi
+            alt="Card background"
+            className="object-cover rounded-xl"
+            src="https://ifh.cc/g/t5Z7ol.jpg"
+            width={270}
+          />
+        </CardBody>
+      </Card>
+
+      {/* nextUI2 */}
+      <Card
+        isFooterBlurred
+        radius="lg"
+        className="border-none"
+      >
+        <ImageUi
+          alt="Woman listing to music"
+          className="object-cover"
+          height={200}
+          src="https://ifh.cc/g/t5Z7ol.jpg"
+          width={200}
+        />
+        <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+          <p className="text-tiny text-white/80">Available soon.</p>
+          <Button className="text-tiny text-white bg-black/20" variant="flat" color="default" radius="lg" size="sm">
+            Notify me
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   )
 }
