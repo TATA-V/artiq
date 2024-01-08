@@ -19,7 +19,7 @@ export default function Home() {
         && (
           <>
             {session.user.image
-            && <Image className="w-[100px] h-[100px] rounded-[50%] object-cover mt-8" src={session.user.image} alt="profile" />}
+            && <Image width={100} height={100} className="rounded-[50%] object-cover mt-8" src={session.user.image} alt="profile" />}
             <p className="text-[20px] pt-[20px] font-semibold">안녕하세요 {session.user.name}님</p>
             <div className="pt-[30px] text-[14px] flex gap-3">
               <button onClick={() => signOut()}>
