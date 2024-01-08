@@ -14,47 +14,49 @@ function Editor() {
   Quill.register('modules/ImageResize', ImageResize)
 
   const imageHandler = () => {
-    const input = document.createElement('input')
-    input.setAttribute('type', 'file')
-    input.setAttribute('accept', 'image/*')
-    input.click()
+    if (typeof document !== 'undefined') {
+      const input = document.createElement('input')
+      input.setAttribute('type', 'file')
+      input.setAttribute('accept', 'image/*')
+      input.click()
 
-    input.addEventListener('change', async () => {
-      if (!input.files) return
-      const file = input.files[0]
-      setImages((prev) => [...prev, file]) // 삭제 예정
+      input.addEventListener('change', async () => {
+        if (!input.files) return
+        const file = input.files[0]
+        setImages((prev) => [...prev, file]) // 삭제 예정
 
-      const formData = new FormData()
-      formData.append('image', file)
+        const formData = new FormData()
+        formData.append('image', file)
 
-      // const { data, error } = await supabase
-      //   .storage
-      //   .from('images')
-      //   .upload(`post/1/${file.name}`, formData, {
-      //     cacheControl: '3600',
-      //     upsert: false,
-      // })
+        // const { data, error } = await supabase
+        //   .storage
+        //   .from('images')
+        //   .upload(`post/1/${file.name}`, formData, {
+        //     cacheControl: '3600',
+        //     upsert: false,
+        // })
 
-      // console.log('data:', data)
+        // console.log('data:', data)
 
-      // if (error) {
-      //   alert(error.message)
-      //   console.log(error)
-      //   return;
-      // }
+        // if (error) {
+        //   alert(error.message)
+        //   console.log(error)
+        //   return;
+        // }
 
-      const res = await fetch('https://api.imgbb.com/1/upload?key=fc82331477f4988748b5727aac465204', {
-        method: 'POST',
-        body: formData,
+        const res = await fetch('https://api.imgbb.com/1/upload?key=fc82331477f4988748b5727aac465204', {
+          method: 'POST',
+          body: formData,
+        })
+        const data = await res.json()
+
+        const quill = quillRef.current?.getEditor()
+        const range = quill?.getSelection()
+        if (quill && range) {
+          quill.insertEmbed(range.index, 'image', data.data.image.url)
+        }
       })
-      const data = await res.json()
-
-      const quill = quillRef.current?.getEditor()
-      const range = quill?.getSelection()
-      if (quill && range) {
-        quill.insertEmbed(range.index, 'image', data.data.image.url)
-      }
-    })
+    }
   }
 
   const modules = useMemo(

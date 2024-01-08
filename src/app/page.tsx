@@ -3,11 +3,13 @@
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
-
-import Editor from 'src/components/common/Editor'
+import dynamic from 'next/dynamic'
 
 export default function Home() {
   const { data: session } = useSession()
+  const DynamicEditor = dynamic(() => import('src/components/common/Editor'), {
+    ssr: false,
+  })
 
   return (
     <div className="p-20 flex flex-col items-center">
@@ -33,7 +35,7 @@ export default function Home() {
         )}
 
       <div className="w-[700px] h-[450px] mt-10">
-        <Editor />
+        <DynamicEditor />
       </div>
     </div>
   )
