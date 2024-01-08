@@ -28,32 +28,30 @@ function Editor() {
         const formData = new FormData()
         formData.append('image', file)
 
-        // const { data, error } = await supabase
-        //   .storage
-        //   .from('images')
-        //   .upload(`post/1/${file.name}`, formData, {
-        //     cacheControl: '3600',
-        //     upsert: false,
-        // })
-
-        // console.log('data:', data)
-
-        // if (error) {
-        //   alert(error.message)
-        //   console.log(error)
-        //   return;
-        // }
-
-        const res = await fetch('https://api.imgbb.com/1/upload?key=fc82331477f4988748b5727aac465204', {
-          method: 'POST',
-          body: formData,
-        })
-        const data = await res.json()
+        const { data, error } = await supabase
+          .storage
+          .from('images')
+          .upload(`post/1/${file.name}`, formData, {
+            cacheControl: '3600',
+            upsert: false,
+          })
+        if (error) {
+          alert(error.message)
+          return
+        }
 
         const quill = quillRef.current?.getEditor()
         const range = quill?.getSelection()
         if (quill && range) {
-          quill.insertEmbed(range.index, 'image', data.data.image.url)
+          const {
+            data: {
+              publicUrl,
+            },
+          } = await supabase
+            .storage
+            .from('images')
+            .getPublicUrl(data.path)
+          quill.insertEmbed(range.index, 'image', publicUrl)
         }
       })
     }
