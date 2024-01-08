@@ -4,22 +4,14 @@ import { useSession, signOut } from "next-auth/react";
 import { supabase } from 'src/lib/supabase/client'
 import { useEffect } from 'react'
 
+import Editor from 'src/components/common/Editor';
+
 export default function Home() {
   const { data: session } = useSession();
 
-  useEffect(() => {
-		// supabase
-		// 	.from('messages')
-		// 	.select()
-		// 	.then(({ data }) => {
-    //     console.log(data)
-		// 	})
-    console.log('supabase:', supabase)
-	}, [])
-
   return (
     <div className="p-20 flex flex-col items-center">
-      <h2 className='font-semibold text-[50px]'>Main</h2>
+      <h2 className='font-semibold text-[50px]'>Aritq</h2>
       <Link href="/signin">
         {!session?.user && <div className='text-[20px] pt-[25px]'>sign in</div>}
       </Link>
@@ -39,6 +31,10 @@ export default function Home() {
           </div>
         </>
       }
+
+      <div className='w-[700px] h-[450px] mt-10'>
+        <Editor />
+      </div>
     </div>
   )
 }
