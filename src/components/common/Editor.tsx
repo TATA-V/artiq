@@ -8,7 +8,6 @@ import { supabase } from 'src/lib/supabase/client'
 
 function Editor() {
   const [value, setValue] = useState('')
-  const [images, setImages] = useState<File[]>([]) // 삭제 예정
 
   const quillRef = useRef<ReactQuill>(null)
   Quill.register('modules/ImageResize', ImageResize)
@@ -23,7 +22,6 @@ function Editor() {
       input.addEventListener('change', async () => {
         if (!input.files) return
         const file = input.files[0]
-        setImages((prev) => [...prev, file]) // 삭제 예정
 
         const formData = new FormData()
         formData.append('image', file)
@@ -83,13 +81,7 @@ function Editor() {
   )
 
   return (
-    <>
-      <ReactQuill ref={quillRef} className="w-full h-full" theme="snow" value={value} onChange={setValue} modules={modules} />
-      {/* test */}
-      {images.map((image, index) => (
-        <div key={index}>{image.name}</div>
-      ))}
-    </>
+    <ReactQuill ref={quillRef} className="w-full h-full" theme="snow" value={value} onChange={setValue} modules={modules} />
   )
 }
 
