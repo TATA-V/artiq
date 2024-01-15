@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import { NextUIProvider } from '@nextui-org/react'
+import { NextUIProvider } from '@nextui-org/react';
 
-type Props = ({
+interface Props {
   children: React.ReactNode;
-  });
+}
 
 export default function NextUiProvider({ children }: Props) {
-  return <NextUIProvider>{children}</NextUIProvider>
+  return <NextUIProvider>{children}</NextUIProvider>;
 }

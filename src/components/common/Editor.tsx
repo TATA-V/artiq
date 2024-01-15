@@ -1,30 +1,31 @@
-'use client'
+'use client';
 
-import { useState, useRef, useMemo } from 'react'
-import ReactQuill, { Quill } from 'react-quill'
-import ImageResize from 'quill-image-resize'
-import 'react-quill/dist/quill.snow.css'
-import { supabase } from 'src/lib/supabase/client'
+import {
+  useState, useRef, useMemo, SetStateAction, Dispatch,
+} from 'react';
+import ReactQuill, { Quill } from 'react-quill';
+import ImageResize from 'quill-image-resize';
+import 'react-quill/dist/quill.snow.css';
+import { supabase } from 'src/lib/supabase/client';
 
 function Editor() {
-  const [value, setValue] = useState('')
-
-  const quillRef = useRef<ReactQuill>(null)
-  Quill.register('modules/ImageResize', ImageResize)
+  const [content, setContent] = useState<string>('');
+  const quillRef = useRef<ReactQuill>(null);
+  Quill.register('modules/ImageResize', ImageResize);
 
   const imageHandler = () => {
     if (typeof document !== 'undefined') {
-      const input = document.createElement('input')
-      input.setAttribute('type', 'file')
-      input.setAttribute('accept', 'image/*')
-      input.click()
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
 
       input.addEventListener('change', async () => {
-        if (!input.files) return
-        const file = input.files[0]
+        if (!input.files) return;
+        const file = input.files[0];
 
-        const formData = new FormData()
-        formData.append('image', file)
+        const formData = new FormData();
+        formData.append('image', file);
 
         const { data, error } = await supabase
           .storage
@@ -32,14 +33,14 @@ function Editor() {
           .upload(`post/1/${file.name}`, formData, {
             cacheControl: '3600',
             upsert: false,
-          })
+          });
         if (error) {
-          alert(error.message)
-          return
+          alert(error.message);
+          return;
         }
 
-        const quill = quillRef.current?.getEditor()
-        const range = quill?.getSelection()
+        const quill = quillRef.current?.getEditor();
+        const range = quill?.getSelection();
         if (quill && range) {
           const {
             data: {
@@ -48,12 +49,12 @@ function Editor() {
           } = await supabase
             .storage
             .from('images')
-            .getPublicUrl(data.path)
-          quill.insertEmbed(range.index, 'image', publicUrl)
+            .getPublicUrl(data.path);
+          quill.insertEmbed(range.index, 'image', publicUrl);
         }
-      })
+      });
     }
-  }
+  };
 
   const modules = useMemo(
     () => ({
@@ -78,11 +79,11 @@ function Editor() {
       },
     }),
     [],
-  )
+  );
 
   return (
-    <ReactQuill ref={quillRef} className="w-full h-full" theme="snow" value={value} onChange={setValue} modules={modules} />
-  )
+    <ReactQuill ref={quillRef} className="w-full h-[calc(100%-45px)]" theme="snow" value={content} onChange={setContent} modules={modules} />
+  );
 }
 
-export default Editor
+export default Editor;
