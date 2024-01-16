@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Carousel from 'src/components/Main/Carousel';
 
 export default function Main() {
   const [posts, setPosts] = useState();
@@ -21,8 +22,8 @@ export default function Main() {
   console.log('posts:', posts);
 
   return (
-    <div>
-      Main Page
-    </div>
+    <>
+      <Carousel />
+    </>
   );
 }

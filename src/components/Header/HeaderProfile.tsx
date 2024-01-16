@@ -1,7 +1,7 @@
 import React from 'react';
 import useUserCookie from 'src/hook/useUserCookie';
 import SignInModal from 'src/components/Modal/SignInModal';
-import { User, DropdownSection, Avatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, cn } from '@nextui-org/react';
+import { User, DropdownSection, Avatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 
 function HeaderProfile() {
@@ -23,7 +23,6 @@ function HeaderProfile() {
                 <DropdownSection aria-label="Profile & Actions" showDivider>
                   <DropdownItem
                     isReadOnly
-                    key="profile"
                     className="h-14 gap-2 opacity-100"
                   >
                     <User
@@ -39,10 +38,10 @@ function HeaderProfile() {
                       }}
                     />
                   </DropdownItem>
-                  <DropdownItem onClick={() => router.push('/profile')} key="profile">
+                  <DropdownItem onClick={() => router.push('/profile')}>
                     Profile
                   </DropdownItem>
-                  <DropdownItem onClick={() => router.push('/dashboard')} key="dashboard">
+                  <DropdownItem onClick={() => router.push('/dashboard')}>
                     Dashboard
                   </DropdownItem>
                 </DropdownSection>

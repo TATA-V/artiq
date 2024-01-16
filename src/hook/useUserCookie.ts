@@ -1,5 +1,6 @@
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/navigation';
+import useUserStore from 'src/store/useUserStore';
 
 const useUserCookie = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
@@ -7,8 +8,8 @@ const useUserCookie = () => {
   const router = useRouter();
 
   const setUser = () => {
-    setCookie('access_token', cookies.access_token, { path: '/', expires: new Date(Date.now() + 60 * 1000), secure: true, httpOnly: true });
-    setCookie('refresh_token', cookies.refresh_token, { path: '/', expires: new Date(Date.now() + 120 * 1000), secure: true, httpOnly: true });
+    setCookie('access_token', cookies.access_token, { path: '/', domain: `${process.env.NEXT_PUBLIC_DOMAIN}`, expires: new Date(Date.now() + 300 * 1000) });
+    setCookie('refresh_token', cookies.refresh_token, { path: '/', domain: `${process.env.NEXT_PUBLIC_DOMAIN}`, expires: new Date(Date.now() + 3600 * 1000) });
   };
 
   const changeUser = (updateUser: any) => {

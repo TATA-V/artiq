@@ -1,15 +1,19 @@
 'use client';
 
 import {
-  useState, useRef, useMemo, SetStateAction, Dispatch,
+  useRef, useMemo, SetStateAction, Dispatch,
 } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import ImageResize from 'quill-image-resize';
 import 'react-quill/dist/quill.snow.css';
 import { supabase } from 'src/lib/supabase/client';
 
-function Editor() {
-  const [content, setContent] = useState<string>('');
+interface Props {
+  content: string;
+  setContent: Dispatch<SetStateAction<string>>;
+}
+
+function Editor({ content, setContent } : Props) {
   const quillRef = useRef<ReactQuill>(null);
   Quill.register('modules/ImageResize', ImageResize);
 
@@ -30,7 +34,7 @@ function Editor() {
         const { data, error } = await supabase
           .storage
           .from('images')
-          .upload(`post/1/${file.name}`, formData, {
+          .upload(`post/${file.name}`, formData, {
             cacheControl: '3600',
             upsert: false,
           });
@@ -82,7 +86,17 @@ function Editor() {
   );
 
   return (
-    <ReactQuill ref={quillRef} className="w-full h-[calc(100%-45px)]" theme="snow" value={content} onChange={setContent} modules={modules} />
+    <>
+      <ReactQuill
+        ref={quillRef}
+        theme="snow"
+        value={content}
+        onChange={setContent}
+        modules={modules}
+        className="w-full h-[calc(100%-45px)]"
+        placeholder="내용을 입력해주세요"
+      />
+    </>
   );
 }
 

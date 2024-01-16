@@ -1,13 +1,8 @@
-import dynamic from 'next/dynamic';
-// import PostWrite from 'src/pages/PostWrite'
+import AuctionPostWrite from 'src/pages/AuctionPostWrite';
 
 function PostWritePage() {
-  const PostWrite = dynamic(() => import('src/pages/PostWrite'), {
-    ssr: false,
-  });
-
   return (
-    <PostWrite />
+    <AuctionPostWrite />
   );
 }
 

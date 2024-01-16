@@ -11,8 +11,8 @@ function TokenProvider({ children } : Props) {
   const [cookies, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
 
   const setAuthCookies = () => {
-    setCookie('access_token', cookies.access_token, { path: '/', expires: new Date(Date.now() + 300 * 1000) });
-    setCookie('refresh_token', cookies.refresh_token, { path: '/', expires: new Date(Date.now() + 3600 * 1000) });
+    setCookie('access_token', cookies.access_token, { path: '/', domain: `${process.env.NEXT_PUBLIC_DOMAIN}`, expires: new Date(Date.now() + 300 * 1000) });
+    setCookie('refresh_token', cookies.refresh_token, { path: '/', domain: `${process.env.NEXT_PUBLIC_DOMAIN}`, expires: new Date(Date.now() + 3600 * 1000) });
   };
   const removeAll = () => {
     removeCookie('user');
@@ -39,7 +39,7 @@ function TokenProvider({ children } : Props) {
             },
             credentials: 'include',
           });
-          const data = res.json();
+          const data = await res.json();
           if (!data) {
             setAuthCookies();
           }

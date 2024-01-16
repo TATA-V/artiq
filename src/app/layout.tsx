@@ -6,6 +6,7 @@ import { inter } from 'src/fonts/fonts';
 import TokenProvider from 'src/components/provider/TokenProvider';
 import Header from 'src/components/Header/Header';
 import MainLayout from 'src/components/provider/MainLayout';
+import StyledComponentsRegistry from 'src/lib/styled/registry';
 
 export const metadata: Metadata = {
   title: 'Aritq',
@@ -26,10 +27,12 @@ export default function RootLayout({
         <CookieProvider>
           <NextUiProvider>
             <TokenProvider>
-              <Header />
-              <MainLayout>
-                {children}
-              </MainLayout>
+              <StyledComponentsRegistry>
+                <Header />
+                <MainLayout>
+                  {children}
+                </MainLayout>
+              </StyledComponentsRegistry>
             </TokenProvider>
           </NextUiProvider>
         </CookieProvider>

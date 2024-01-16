@@ -10,7 +10,8 @@ import dynamic from 'next/dynamic';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, accessToken, refreshToken, changeUser, removeAllUser } = useUserCookie();
+  const [currentPath, setCurrentPath] = useState('');
+  const { user, changeUser, removeAllUser } = useUserCookie();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -23,15 +24,21 @@ function Header() {
       changeUser(decoded);
     }
   }, []);
+
+  useEffect(() => {
+    const paths = pathname?.split('/');
+    const path = paths ? paths[1] : ' ';
+    setCurrentPath(path);
+  }, [pathname]);
   const HeaderProfile = dynamic(() => import('src/components/Header/HeaderProfile'), {
     ssr: false,
   });
 
   const menu = [
-    { name: 'Products', path: '/products' },
-    { name: 'Auction', path: '/auction' },
-    { name: 'Community', path: '/community' },
-    { name: 'Chatting', path: '/chatting' },
+    { name: 'Products', path: 'products' },
+    { name: 'Auction', path: 'auction' },
+    { name: 'Community', path: 'community' },
+    { name: 'Chatting', path: 'chatting' },
   ];
 
   const mobileMenu = user ? [...menu, { name: 'Log Out', path: '' }] : [...menu];
@@ -49,12 +56,14 @@ function Header() {
           aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           className="sm:hidden"
         />
-        <NavbarBrand onClick={() => router.push('/')} className="flex items-center cursor-pointer">
-          <div className="w-[19px] h-[22px] text-[#000] mr-[6px]">
-            <Logo />
-          </div>
-          <div className={`${barlow.className} select-none tracking-[0.08rem] text-[22px] font-[600]`}>
-            ARTIQ
+        <NavbarBrand>
+          <div onClick={() => router.push('/')} className="cursor-pointer flex items-center">
+            <div className="w-[19px] h-[22px] text-[#000] mr-[6px]">
+              <Logo />
+            </div>
+            <div className={`${barlow.className} select-none tracking-[0.08rem] text-[22px] font-[600]`}>
+              ARTIQ
+            </div>
           </div>
         </NavbarBrand>
       </NavbarContent>
@@ -62,7 +71,7 @@ function Header() {
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {menu.map((item, idx) => (
           <NavbarItem key={idx}>
-            <Link className={pathname === `${item.path}` ? 'font-[600]' : 'font-[400]'} color={pathname === `${item.path}` ? 'primary' : 'foreground'} href={`${item.path}`}>
+            <Link className={currentPath === `${item.path}` ? 'font-[600]' : 'font-[400]'} color={currentPath === `${item.path}` ? 'primary' : 'foreground'} href={`/${item.path}`}>
               {item.name}
             </Link>
           </NavbarItem>
@@ -82,7 +91,7 @@ function Header() {
                 item.name === 'Sign In' ? 'primary' : item.name === 'Log Out' ? 'danger' : 'foreground'
               }
               className="w-full"
-              href={`${item.path}`}
+              href={`/${item.path}`}
               size="lg"
             >
               <div onClick={() => handleClick(item.name)}>
