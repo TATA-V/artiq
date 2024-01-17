@@ -27,15 +27,6 @@ function TokenProvider({ children } : Props) {
     const fetchData = async () => {
       if (!accessToken && refreshToken) {
         try {
-          // const res = await fetch('/api/auth/token/refresh', {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //     authorization: `Bearer ${refreshToken}`,
-          //   },
-          //   credentials: 'include',
-          // });
-          // const data = await res.json();
           const data = await getNewToken(refreshToken);
           if (!data) {
             setAuthCookies();

@@ -7,32 +7,28 @@ import { useObjectUrl } from '@reactuses/core';
 import useUserCookie from 'src/hook/useUserCookie';
 import getImgUrl from 'src/utils/getImgUrl';
 
-import Editor from 'src/components/common/Editor';
+// import Editor from 'src/components/common/Editor';
 import { usePostService } from 'src/services/usePostService';
+import dynamic from 'next/dynamic';
 
 function AuctionEditor() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [category, setCategory] = useState<string>('');
   const [file, setFile] = useState<File>();
-  const [category, setCategory] = useState('');
   const url = useObjectUrl(file);
+  const [imgUrl, setImgUrl] = useState(url);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const { user } = useUserCookie();
   const editorProps = { content, setContent };
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { insertOne } = usePostService();
-
-  useEffect(() => {
-    const search = searchParams?.get('post');
-
-    if (search) {
-      // const decoded = JSON.parse(Buffer.from(search, 'base64').toString('utf-8'));
-      // const parse = JSON.parse(decoded);
-      // postId만 가져와서 다시 데이터 요청하는 방식으로 가야 하는 건가
-    }
-  }, []);
+  const postId = searchParams?.get('id');
+  const { findOne, insertOne, updataOne } = usePostService();
+  const Editor = dynamic(() => import('src/components/common/Editor'), {
+    ssr: false,
+  });
 
   const categoryArr = [
     { id: 1, value: '그림' },
@@ -43,6 +39,19 @@ function AuctionEditor() {
     { id: 6, value: '식품' },
   ];
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (postId) {
+        const data = await findOne(postId);
+        setTitle(data.title);
+        setImgUrl(data.imgUrl);
+        setContent(data.contentHTML);
+        setCategory(data.category);
+      }
+    };
+    fetchData();
+  }, []);
+
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
     const { files } = target;
@@ -50,28 +59,27 @@ function AuctionEditor() {
   };
 
   const handleSubmit = async () => {
-    if (!user.id || !file) return;
+    if (!user.id) return;
 
-    const imgUrl = await getImgUrl({ file, path: 'auction' });
+    let imgUrl;
+    if (file) {
+      imgUrl = await getImgUrl({ file, path: 'auction' });
+    }
     const body = {
       userId: Number(user.id),
       title,
       imgUrl,
-      category: categoryArr[Number(category) - 1].value,
+      category,
       contentHTML: content,
     };
 
     try {
-      // await fetch('/api/posts', {
-      //   method: 'POST',
-      //   body,
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // });
-      await insertOne(body);
-
-      router.push('/auction');
+      if (postId) {
+        await updataOne({ payload: body, postId });
+      } else {
+        await insertOne(body);
+      }
+      router.back();
     } catch (err) {
       alert('게시글 등록에 실패했습니다.');
     }
@@ -88,7 +96,7 @@ function AuctionEditor() {
           width={300}
           height={200}
           alt="img"
-          src={file ? url : 'https://zuvqhyraygegegljnixc.supabase.co/storage/v1/object/public/images/common/temp.png'}
+          src={imgUrl || 'https://zuvqhyraygegegljnixc.supabase.co/storage/v1/object/public/images/common/temp.png'}
           className="min-w-[300px] min-h-[200px] object-cover cursor-pointer"
         />
 
@@ -98,9 +106,10 @@ function AuctionEditor() {
             className="max-w-[12rem]"
             variant="bordered"
             onChange={(e) => setCategory(e.target.value)}
+            defaultSelectedKeys={[`${category}`]}
           >
             {categoryArr.map((item) => (
-              <SelectItem key={item.id} value={item.value}>
+              <SelectItem key={item.value} value={item.value}>
                 {item.value}
               </SelectItem>
             ))}
@@ -112,6 +121,7 @@ function AuctionEditor() {
             onChange={(e) => setTitle(e.target.value)}
             className="w-full text-red placeholder:text-black100 "
             placeholder="제목을 입력해주세요"
+            value={title}
           />
         </div>
       </div>
@@ -128,7 +138,7 @@ function AuctionEditor() {
         color="primary"
         className="my-[30px]"
       >
-        등록
+        {postId ? '수정' : '등록'}
       </Button>
     </div>
   );

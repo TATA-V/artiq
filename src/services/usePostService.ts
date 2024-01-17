@@ -35,10 +35,21 @@ export const usePostService = () => {
     });
   };
 
+  const updataOne = async (post : { payload: FindAll, postId: string }) => {
+    await fetch(`/api/posts/${post.postId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(post.payload),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
+
   return {
     findAll,
     findOne,
     deleteOne,
     insertOne,
+    updataOne,
   };
 };

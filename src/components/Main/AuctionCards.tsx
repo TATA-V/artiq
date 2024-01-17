@@ -11,11 +11,6 @@ function AuctionCards() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // const res = await fetch('/api/posts', {
-      //   method: 'GET',
-      //   next: { revalidate: 300 },
-      // });
-      // const data = await res.json();
       const data = await findAll();
       setPosts(data);
       return data;

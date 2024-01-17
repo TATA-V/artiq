@@ -19,15 +19,9 @@ function AuctionDetailPost({ postId } : Props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      // const res = await fetch(`/api/posts/${postId}`, {
-      //   method: 'GET',
-      //   next: { revalidate: 300 },
-      // });
-      // const data = await res.json();
       const data = await findOne(postId);
       if (data) {
         setPost(data);
-        setEncoded(Buffer.from(JSON.stringify(data), 'utf8').toString('base64'));
       }
       return data;
     };
@@ -64,7 +58,7 @@ function AuctionDetailPost({ postId } : Props) {
                 <p>{post.summary}</p>
 
                 <div className="flex gap-2 mt-5">
-                  <Button onClick={() => router.push(`/auction/post/edit?post=${encoded}`)} size="sm" color="primary">
+                  <Button onClick={() => router.push(`/auction/post/edit?id=${post.id}`)} size="sm" color="primary">
                     수정
                   </Button>
                   <Button onClick={handleDelete} size="sm" color="danger">

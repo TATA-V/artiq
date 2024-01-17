@@ -22,7 +22,7 @@ function Carousel() {
         >
           {[...Array(3)].map((_, idx) => (
             <SwiperSlide key={idx}>
-              <div className="h-[450px] bg-black300">Slide {idx + 1}</div>
+              <div className="h-[450px] w-[976px] bg-black300">Slide {idx + 1}</div>
             </SwiperSlide>
           ))}
           <div className="swiper-button-next" />
