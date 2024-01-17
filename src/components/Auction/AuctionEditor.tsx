@@ -7,9 +7,8 @@ import { useObjectUrl } from '@reactuses/core';
 import useUserCookie from 'src/hook/useUserCookie';
 import getImgUrl from 'src/utils/getImgUrl';
 
-// import Editor from 'src/components/common/Editor';
+import Editor from 'src/components/common/Editor';
 import { usePostService } from 'src/services/usePostService';
-import dynamic from 'next/dynamic';
 
 function AuctionEditor() {
   const [title, setTitle] = useState('');
@@ -26,9 +25,6 @@ function AuctionEditor() {
   const searchParams = useSearchParams();
   const postId = searchParams?.get('id');
   const { findOne, insertOne, updataOne } = usePostService();
-  const Editor = dynamic(() => import('src/components/common/Editor'), {
-    ssr: false,
-  });
 
   const categoryArr = [
     { id: 1, value: '그림' },
@@ -40,6 +36,7 @@ function AuctionEditor() {
   ];
 
   useEffect(() => {
+    if (typeof document === 'undefined') return;
     const fetchData = async () => {
       if (postId) {
         const data = await findOne(postId);
@@ -100,13 +97,13 @@ function AuctionEditor() {
           className="min-w-[300px] min-h-[200px] object-cover cursor-pointer"
         />
 
+        {/* defaultSelectedKeys={[`${category}`]} */}
         <div className="flex flex-col w-full gap-3">
           <Select
             label="카테고리 선택"
             className="max-w-[12rem]"
             variant="bordered"
             onChange={(e) => setCategory(e.target.value)}
-            defaultSelectedKeys={[`${category}`]}
           >
             {categoryArr.map((item) => (
               <SelectItem key={item.value} value={item.value}>
