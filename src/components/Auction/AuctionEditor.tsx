@@ -7,8 +7,9 @@ import { useObjectUrl } from '@reactuses/core';
 import useUserCookie from 'src/hook/useUserCookie';
 import getImgUrl from 'src/utils/getImgUrl';
 
-import Editor from 'src/components/common/Editor';
 import { usePostService } from 'src/services/usePostService';
+import Hydration from 'src/components/provider/Hydration';
+import dynamic from 'next/dynamic';
 
 function AuctionEditor() {
   const [title, setTitle] = useState('');
@@ -25,6 +26,9 @@ function AuctionEditor() {
   const searchParams = useSearchParams();
   const postId = searchParams?.get('id');
   const { findOne, insertOne, updataOne } = usePostService();
+  const Editor = dynamic(() => import('src/components/common/Editor'), {
+    ssr: false,
+  });
 
   const categoryArr = [
     { id: 1, value: '그림' },
@@ -83,7 +87,7 @@ function AuctionEditor() {
   };
 
   return (
-    <div>
+    <Hydration>
       <input ref={fileRef} className="hidden" type="file" accept="image/jpeg, image/png" onChange={onFileChange} />
       <div className="flex gap-7">
         <Image
@@ -137,7 +141,7 @@ function AuctionEditor() {
       >
         {postId ? '수정' : '등록'}
       </Button>
-    </div>
+    </Hydration>
   );
 }
 

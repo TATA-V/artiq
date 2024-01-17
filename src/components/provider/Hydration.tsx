@@ -6,7 +6,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const HydrationZustand = ({ children } : Props) => {
+const Hydration = ({ children } : Props) => {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -20,4 +20,4 @@ const HydrationZustand = ({ children } : Props) => {
   );
 };
 
-export default HydrationZustand;
+export default Hydration;
