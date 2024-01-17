@@ -9,7 +9,6 @@ import useUserCookie from 'src/hook/useUserCookie';
 import getImgUrl from 'src/utils/getImgUrl';
 
 import Editor from 'src/components/common/Editor';
-// import dynamic from 'next/dynamic';
 
 function AuctionEditor() {
   const [title, setTitle] = useState('');
@@ -48,6 +47,10 @@ function AuctionEditor() {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setImgUrl(url);
+  }, [url]);
 
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
