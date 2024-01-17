@@ -1,9 +1,13 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import PathList from 'src/components/common/PathList';
-import AuctionEditor from 'src/components/Auction/AuctionEditor';
 
 function AuctionEdit() {
+  const AuctionEditor = dynamic(() => import('src/components/Auction/AuctionEditor'), {
+    ssr: false,
+  });
+
   return (
     <>
       <PathList />

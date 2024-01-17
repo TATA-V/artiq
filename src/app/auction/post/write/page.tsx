@@ -1,3 +1,5 @@
+'use client';
+
 import AuctionWrite from 'src/pages/AuctionWrite';
 
 function AuctionWritePage() {

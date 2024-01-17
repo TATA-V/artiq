@@ -1,3 +1,5 @@
+'use client';
+
 import AuctionEdit from 'src/pages/AuctionEdit';
 
 function AuctionEditPage() {
