@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic';
 import PathList from 'src/components/common/PathList';
 
-function AuctionPostWrite() {
-  const AuctionEditor = dynamic(() => import('src/components/AuctionPost/AuctionEditor'), {
+function AuctionWrite() {
+  const AuctionEditor = dynamic(() => import('src/components/Auction/AuctionEditor'), {
     ssr: false,
   });
 
@@ -14,4 +14,4 @@ function AuctionPostWrite() {
   );
 }
 
-export default AuctionPostWrite;
+export default AuctionWrite;

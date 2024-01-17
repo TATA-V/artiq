@@ -5,6 +5,8 @@
   "ignorePatterns": ["node_modules/"],
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "camelcase": "off"
+    "camelcase": "off",
+    "react/no-danger": "off",
+    "consistent-return": "off"
   }
 }

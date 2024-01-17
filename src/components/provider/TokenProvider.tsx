@@ -1,55 +1,52 @@
 'use client';
 
 import { useEffect, ReactNode } from 'react';
-import { useCookies } from 'react-cookie';
+import useUserCookie from 'src/hook/useUserCookie';
+import { useAuthService } from 'src/services/useAuthService';
 
 interface Props {
   children: ReactNode;
 }
 
 function TokenProvider({ children } : Props) {
-  const [cookies, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
+  const { setUser, accessToken, refreshToken, removeAllUser } = useUserCookie();
+  const { getNewToken } = useAuthService();
 
   const setAuthCookies = () => {
-    setCookie('access_token', cookies.access_token, { path: '/', domain: `${process.env.NEXT_PUBLIC_DOMAIN}`, expires: new Date(Date.now() + 300 * 1000) });
-    setCookie('refresh_token', cookies.refresh_token, { path: '/', domain: `${process.env.NEXT_PUBLIC_DOMAIN}`, expires: new Date(Date.now() + 3600 * 1000) });
-  };
-  const removeAll = () => {
-    removeCookie('user');
-    removeCookie('access_token');
-    removeCookie('refresh_token');
+    setUser();
   };
 
   useEffect(() => {
     setAuthCookies();
-    if (!(cookies.access_token)) {
-      removeAll();
+    if (!accessToken) {
+      removeAllUser();
     }
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!(cookies.access_token) && (cookies.refresh_token)) {
+      if (!accessToken && refreshToken) {
         try {
-          const res = await fetch('/api/auth/token/refresh', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              authorization: `Bearer ${cookies.refresh_token}`,
-            },
-            credentials: 'include',
-          });
-          const data = await res.json();
+          // const res = await fetch('/api/auth/token/refresh', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //     authorization: `Bearer ${refreshToken}`,
+          //   },
+          //   credentials: 'include',
+          // });
+          // const data = await res.json();
+          const data = await getNewToken(refreshToken);
           if (!data) {
             setAuthCookies();
           }
         } catch (error) {
-          removeAll();
+          removeAllUser();
         }
       }
     };
     fetchData();
-  }, [cookies.access_token]);
+  }, [accessToken]);
 
   return (
     <>

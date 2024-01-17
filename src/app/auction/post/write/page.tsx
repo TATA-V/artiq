@@ -1,9 +1,9 @@
-import AuctionPostWrite from 'src/pages/AuctionPostWrite';
+import AuctionWrite from 'src/pages/AuctionWrite';
 
-function PostWritePage() {
+function AuctionWritePage() {
   return (
-    <AuctionPostWrite />
+    <AuctionWrite />
   );
 }
 
-export default PostWritePage;
+export default AuctionWritePage;

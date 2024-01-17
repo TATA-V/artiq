@@ -5,7 +5,6 @@ import CookieProvider from 'src/components/provider/CookieProvider';
 import { inter } from 'src/fonts/fonts';
 import TokenProvider from 'src/components/provider/TokenProvider';
 import Header from 'src/components/Header/Header';
-import MainLayout from 'src/components/provider/MainLayout';
 import StyledComponentsRegistry from 'src/lib/styled/registry';
 
 export const metadata: Metadata = {
@@ -29,9 +28,7 @@ export default function RootLayout({
             <TokenProvider>
               <StyledComponentsRegistry>
                 <Header />
-                <MainLayout>
-                  {children}
-                </MainLayout>
+                {children}
               </StyledComponentsRegistry>
             </TokenProvider>
           </NextUiProvider>

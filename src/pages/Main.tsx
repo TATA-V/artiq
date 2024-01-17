@@ -1,29 +1,17 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+import Cards from 'src/components/Main/AuctionCards';
 import Carousel from 'src/components/Main/Carousel';
+import DefaultLayout from 'src/components/provider/DefaultLayout';
 
 export default function Main() {
-  const [posts, setPosts] = useState();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch('/api/posts', {
-        method: 'GET',
-        next: { revalidate: 300 },
-      });
-      const data = await res.json();
-      setPosts(data);
-      return data;
-    };
-    fetchData();
-  }, []);
-
-  console.log('posts:', posts);
-
   return (
     <>
       <Carousel />
+      <DefaultLayout>
+        <div className="py-8 text-[2rem] font-medium">
+          test
+        </div>
+        <Cards />
+      </DefaultLayout>
     </>
   );
 }

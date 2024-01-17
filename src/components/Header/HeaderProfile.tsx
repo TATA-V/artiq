@@ -15,9 +15,7 @@ function HeaderProfile() {
           <>
             <Dropdown radius="sm">
               <DropdownTrigger>
-                <div className="w-[219px] flex justify-end transition-all duration-150 ease-in-out">
-                  <Avatar className="w-[35px] h-[35px] cursor-pointer" isBordered color="default" src={`${user.profileUrl}`} />
-                </div>
+                <Avatar className="w-[35px] h-[35px] cursor-pointer" isBordered color="default" src={`${user.profileUrl}`} />
               </DropdownTrigger>
               <DropdownMenu className="p-3">
                 <DropdownSection aria-label="Profile & Actions" showDivider>

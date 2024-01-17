@@ -2,31 +2,34 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper/modules';
-import 'swiper/swiper-bundle.css';
 import styled from 'styled-components';
+import 'swiper/swiper-bundle.css';
 
 function Carousel() {
   return (
-    <CarouselBlock>
-      <Swiper
-        modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
-        slidesPerView={1}
-        navigation={{
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        }}
-        loop
-        autoplay={{ delay: 5000 }}
-      >
-        {[...Array(3)].map((_, idx) => (
-          <SwiperSlide key={idx}>
-            <div className="h-[450px] bg-black300 w-full">Slide {idx + 1}</div>
-          </SwiperSlide>
-        ))}
-        <div className="swiper-button-next" />
-        <div className="swiper-button-prev" />
-      </Swiper>
-    </CarouselBlock>
+    <div className="flex justify-center">
+      <CarouselBlock className="h-[250px] md:h-[430px] max-w-[976px]">
+        <Swiper
+          modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
+          spaceBetween={50}
+          slidesPerView={1}
+          navigation={{
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }}
+          loop
+          autoplay={{ delay: 5000 }}
+        >
+          {[...Array(3)].map((_, idx) => (
+            <SwiperSlide key={idx}>
+              <div className="h-[450px] bg-black300">Slide {idx + 1}</div>
+            </SwiperSlide>
+          ))}
+          <div className="swiper-button-next" />
+          <div className="swiper-button-prev" />
+        </Swiper>
+      </CarouselBlock>
+    </div>
   );
 }
 
@@ -37,9 +40,7 @@ const CarouselBlock = styled.div`
   .swiper-button-prev::after {
     opacity: 0;
   }
-  height: 450px;
-  margin-top: 8px;
   border-radius: 7.5px;
   overflow: hidden;
-  width: 100%;
+  margin: 0.5rem 1.5rem 0 1.5rem;
 `;
