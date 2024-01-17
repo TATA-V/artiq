@@ -70,7 +70,7 @@ function AuctionDetailPost({ postId } : Props) {
           </div>
 
           <div className="pt-20 w-full">
-            {post.contentHTML && <div dangerouslySetInnerHTML={{ __html: post.contentHTML }} />}
+            {post.contentHTML && <article dangerouslySetInnerHTML={{ __html: post.contentHTML }} />}
           </div>
         </div>
 

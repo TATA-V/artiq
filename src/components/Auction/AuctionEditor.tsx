@@ -4,12 +4,12 @@ import { Button, Input, Image, Select, SelectItem } from '@nextui-org/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useObjectUrl } from '@reactuses/core';
+import { usePostService } from 'src/services/usePostService';
 import useUserCookie from 'src/hook/useUserCookie';
 import getImgUrl from 'src/utils/getImgUrl';
 
-import { usePostService } from 'src/services/usePostService';
-import Hydration from 'src/components/provider/Hydration';
-import dynamic from 'next/dynamic';
+import Editor from 'src/components/common/Editor';
+// import dynamic from 'next/dynamic';
 
 function AuctionEditor() {
   const [title, setTitle] = useState('');
@@ -26,9 +26,6 @@ function AuctionEditor() {
   const searchParams = useSearchParams();
   const postId = searchParams?.get('id');
   const { findOne, insertOne, updataOne } = usePostService();
-  const Editor = dynamic(() => import('src/components/common/Editor'), {
-    ssr: false,
-  });
 
   const categoryArr = [
     { id: 1, value: '그림' },
@@ -40,7 +37,6 @@ function AuctionEditor() {
   ];
 
   useEffect(() => {
-    if (typeof document === 'undefined') return;
     const fetchData = async () => {
       if (postId) {
         const data = await findOne(postId);
@@ -87,7 +83,7 @@ function AuctionEditor() {
   };
 
   return (
-    <Hydration>
+    <>
       <input ref={fileRef} className="hidden" type="file" accept="image/jpeg, image/png" onChange={onFileChange} />
       <div className="flex gap-7">
         <Image
@@ -141,7 +137,7 @@ function AuctionEditor() {
       >
         {postId ? '수정' : '등록'}
       </Button>
-    </Hydration>
+    </>
   );
 }
 

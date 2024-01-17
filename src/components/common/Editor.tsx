@@ -18,45 +18,46 @@ function Editor({ content, setContent } : Props) {
   Quill.register('modules/ImageResize', ImageResize);
 
   const imageHandler = () => {
-    if (typeof document === 'undefined') return;
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
+    if (typeof document !== 'undefined') {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
 
-    input.addEventListener('change', async () => {
-      if (!input.files) return;
-      const file = input.files[0];
+      input.addEventListener('change', async () => {
+        if (!input.files) return;
+        const file = input.files[0];
 
-      const formData = new FormData();
-      formData.append('image', file);
+        const formData = new FormData();
+        formData.append('image', file);
 
-      const { data, error } = await supabase
-        .storage
-        .from('images')
-        .upload(`post/${file.name}`, formData, {
-          cacheControl: '3600',
-          upsert: false,
-        });
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      const quill = quillRef.current?.getEditor();
-      const range = quill?.getSelection();
-      if (quill && range) {
-        const {
-          data: {
-            publicUrl,
-          },
-        } = await supabase
+        const { data, error } = await supabase
           .storage
           .from('images')
-          .getPublicUrl(data.path);
-        quill.insertEmbed(range.index, 'image', publicUrl);
-      }
-    });
+          .upload(`post/${file.name}`, formData, {
+            cacheControl: '3600',
+            upsert: false,
+          });
+        if (error) {
+          alert(error.message);
+          return;
+        }
+
+        const quill = quillRef.current?.getEditor();
+        const range = quill?.getSelection();
+        if (quill && range) {
+          const {
+            data: {
+              publicUrl,
+            },
+          } = await supabase
+            .storage
+            .from('images')
+            .getPublicUrl(data.path);
+          quill.insertEmbed(range.index, 'image', publicUrl);
+        }
+      });
+    }
   };
 
   const modules = useMemo(
