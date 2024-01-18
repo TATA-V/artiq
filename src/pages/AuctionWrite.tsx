@@ -2,16 +2,18 @@
 
 import dynamic from 'next/dynamic';
 import PathList from 'src/components/common/PathList';
+import { Spinner } from '@nextui-org/react';
 
 function AuctionWrite() {
-  const AuctionEditor = dynamic(() => import('src/components/Auction/AuctionEditor'), {
+  const NewEditor = dynamic(() => import('src/components/Editor/NewEditor'), {
+    loading: () => <div className="flex justify-center w-full"><Spinner /></div>,
     ssr: false,
   });
 
   return (
     <>
       <PathList />
-      <AuctionEditor />
+      <NewEditor />
     </>
   );
 }

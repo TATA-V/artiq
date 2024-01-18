@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
   images: {
-    domains: ['phinf.pstatic.net', 'lh3.googleusercontent.com'],
+    domains: ['phinf.pstatic.net', 'ifh.cc', 'lh3.googleusercontent.com', 'zuvqhyraygegegljnixc.supabase.co'],
   },
   async rewrites() {
     return [

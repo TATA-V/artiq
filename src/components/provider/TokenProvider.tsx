@@ -3,17 +3,20 @@
 import { useEffect, ReactNode } from 'react';
 import useUserCookie from 'src/hook/useUserCookie';
 import { useAuthService } from 'src/services/useAuthService';
+import useUserStore from 'src/store/useUserStore';
 
 interface Props {
   children: ReactNode;
 }
 
 function TokenProvider({ children } : Props) {
-  const { setUser, accessToken, refreshToken, removeAllUser } = useUserCookie();
+  const { user, setUser, accessToken, refreshToken, removeAllUser } = useUserCookie();
   const { getNewToken } = useAuthService();
+  const { changeAll } = useUserStore();
 
   const setAuthCookies = () => {
     setUser();
+    changeAll(user);
   };
 
   useEffect(() => {

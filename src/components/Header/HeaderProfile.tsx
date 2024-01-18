@@ -1,12 +1,12 @@
 import React from 'react';
-import useUserCookie from 'src/hook/useUserCookie';
 import SignInModal from 'src/components/Modal/SignInModal';
 import { User, DropdownSection, Avatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
+import useUserStore from 'src/store/useUserStore';
 
 function HeaderProfile() {
-  const { user, removeAllUser } = useUserCookie();
   const router = useRouter();
+  const { user, resetUser } = useUserStore((state) => state);
 
   return (
     <>
@@ -45,7 +45,7 @@ function HeaderProfile() {
                 </DropdownSection>
 
                 <DropdownSection>
-                  <DropdownItem onClick={removeAllUser} key="logout" className="text-danger" color="danger">Log Out</DropdownItem>
+                  <DropdownItem onClick={resetUser} key="logout" className="text-danger" color="danger">Log Out</DropdownItem>
                 </DropdownSection>
               </DropdownMenu>
             </Dropdown>

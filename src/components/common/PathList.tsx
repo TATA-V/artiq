@@ -9,7 +9,7 @@ function PathList() {
   paths?.shift();
 
   return (
-    <Breadcrumbs className="mt-7 mb-11 ">
+    <Breadcrumbs className="mt-7 mb-11">
       {paths?.map((item, idx) => (
         <BreadcrumbItem key={idx}>
           {item}

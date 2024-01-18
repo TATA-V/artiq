@@ -6,6 +6,7 @@ import { Image, Button } from '@nextui-org/react';
 import PathList from 'src/components/common/PathList';
 import { useRouter } from 'next/navigation';
 import { usePostService } from 'src/services/usePostService';
+import styled from 'styled-components';
 
 interface Props {
   postId: string;
@@ -13,7 +14,6 @@ interface Props {
 
 function AuctionDetailPost({ postId } : Props) {
   const [post, setPost] = useState<PostContent | null>(null);
-  const [encoded, setEncoded] = useState<string>('');
   const router = useRouter();
   const { findOne, deleteOne } = usePostService();
 
@@ -69,9 +69,9 @@ function AuctionDetailPost({ postId } : Props) {
             </div>
           </div>
 
-          <div className="pt-20 w-full">
+          <ContentBox className="pt-20 w-full">
             {post.contentHTML && <article dangerouslySetInnerHTML={{ __html: post.contentHTML }} />}
-          </div>
+          </ContentBox>
         </div>
 
       )}
@@ -80,3 +80,12 @@ function AuctionDetailPost({ postId } : Props) {
 }
 
 export default AuctionDetailPost;
+
+const ContentBox = styled.div`
+  img {
+    width: 100%;
+  }
+  .ql-align-center {
+    text-align: center;
+  }
+`;

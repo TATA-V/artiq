@@ -1,8 +1,11 @@
 import { useCookies } from 'react-cookie';
+import useUserStore from 'src/store/useUserStore';
 
 const useUserCookie = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
   const { user, access_token, refresh_token } = cookies;
+  const resetUser = useUserStore((state) => state.resetUser);
+  const changeProperty = useUserStore((state) => state.changeProperty);
 
   const setUser = () => {
     setCookie('access_token', cookies.access_token, { path: '/', domain: `${process.env.NEXT_PUBLIC_DOMAIN}`, expires: new Date(Date.now() + 300 * 1000) });
@@ -11,12 +14,14 @@ const useUserCookie = () => {
 
   const changeUser = (updateUser: any) => {
     setCookie('user', { ...user, ...updateUser });
+    changeProperty({ ...user, ...updateUser });
   };
 
   const removeAllUser = () => {
     removeCookie('user');
     removeCookie('access_token');
     removeCookie('refresh_token');
+    resetUser();
   };
 
   return {

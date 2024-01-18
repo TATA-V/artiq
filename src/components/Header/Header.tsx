@@ -6,12 +6,14 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Logo from 'src/components/icons/Logo';
 import { useEffect, useState } from 'react';
 import useUserCookie from 'src/hook/useUserCookie';
+import useUserStore from 'src/store/useUserStore';
 import dynamic from 'next/dynamic';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState('');
-  const { user, changeUser, removeAllUser } = useUserCookie();
+  const { changeUser, removeAllUser } = useUserCookie();
+  const user = useUserStore((state) => state.user);
 
   const router = useRouter();
   const pathname = usePathname();

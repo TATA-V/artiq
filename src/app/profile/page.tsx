@@ -1,6 +1,8 @@
+import Profile from 'src/pages/Profile';
+
 function ProfilePage() {
   return (
-    <div>Profile Page</div>
+    <Profile />
   );
 }
 
