@@ -1,46 +1,55 @@
 'use client';
 
 import { useEffect, ReactNode } from 'react';
-import useUserCookie from 'src/hook/useUserCookie';
-import { useAuthService } from 'src/services/useAuthService';
-import useUserStore from 'src/store/useUserStore';
+import { useCookies } from 'react-cookie';
 
 interface Props {
   children: ReactNode;
 }
 
 function TokenProvider({ children } : Props) {
-  const { user, setUser, accessToken, refreshToken, removeAllUser } = useUserCookie();
-  const { getNewToken } = useAuthService();
-  const { changeAll } = useUserStore();
+  const [cookies, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
 
   const setAuthCookies = () => {
-    setUser();
-    changeAll(user);
+    setCookie('access_token', cookies.access_token, { path: '/', domain: `${process.env.NEXT_PUBLIC_DOMAIN}`, expires: new Date(Date.now() + 300 * 1000) });
+    setCookie('refresh_token', cookies.refresh_token, { path: '/', domain: `${process.env.NEXT_PUBLIC_DOMAIN}`, expires: new Date(Date.now() + 3600 * 1000) });
+  };
+  const removeAll = () => {
+    removeCookie('user');
+    removeCookie('access_token');
+    removeCookie('refresh_token');
   };
 
   useEffect(() => {
     setAuthCookies();
-    if (!accessToken) {
-      removeAllUser();
+    if (!(cookies.access_token)) {
+      removeAll();
     }
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!accessToken && refreshToken) {
+      if (!(cookies.access_token) && (cookies.refresh_token)) {
         try {
-          const data = await getNewToken(refreshToken);
+          const res = await fetch('/api/auth/token/refresh', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              authorization: `Bearer ${cookies.refresh_token}`,
+            },
+            credentials: 'include',
+          });
+          const data = await res.json();
           if (!data) {
             setAuthCookies();
           }
         } catch (error) {
-          removeAllUser();
+          removeAll();
         }
       }
     };
     fetchData();
-  }, [accessToken]);
+  }, [cookies.access_token]);
 
   return (
     <>
