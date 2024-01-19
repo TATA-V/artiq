@@ -18,10 +18,10 @@ const useUserCookie = () => {
   };
 
   const removeAllUser = () => {
+    resetUser();
     removeCookie('user');
     removeCookie('access_token');
     removeCookie('refresh_token');
-    resetUser();
   };
 
   return {

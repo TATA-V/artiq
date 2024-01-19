@@ -7,6 +7,9 @@ import PathList from 'src/components/common/PathList';
 import { useRouter } from 'next/navigation';
 import { usePostService } from 'src/services/usePostService';
 import styled from 'styled-components';
+import * as io from 'socket.io-client';
+import useUserStore from 'src/store/useUserStore';
+import useUserCookie from 'src/hook/useUserCookie';
 
 interface Props {
   postId: string;
@@ -14,8 +17,15 @@ interface Props {
 
 function AuctionDetailPost({ postId } : Props) {
   const [post, setPost] = useState<PostContent | null>(null);
-  const router = useRouter();
   const { findOne, deleteOne } = usePostService();
+  // const { user } = useUserStore();
+  const router = useRouter();
+  const { user, accessToken, refreshToken } = useUserCookie();
+  // const socket = io.connect('/ws/chats');
+
+  console.log('user:', user);
+  console.log('acc:', accessToken);
+  console.log('refr:', refreshToken);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +37,17 @@ function AuctionDetailPost({ postId } : Props) {
     };
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   socket.on('enter_chat', [] , (res) => {
+  //     console.log(res)
+  //   });
+  // }, [socket]);
+  const handleClickChat = () => {
+    // if (user && post) {
+    //   socket.emit('create_chat', [user.id, post.userId]);
+    // }
+  };
 
   const handleDelete = async () => {
     if (post && post.id) {
@@ -65,6 +86,10 @@ function AuctionDetailPost({ postId } : Props) {
                     삭제
                   </Button>
                 </div>
+
+                <Button onClick={handleClickChat} className="mt-8" color="primary" variant="bordered">
+                  채팅하기
+                </Button>
               </div>
             </div>
           </div>
@@ -73,7 +98,6 @@ function AuctionDetailPost({ postId } : Props) {
             {post.contentHTML && <article dangerouslySetInnerHTML={{ __html: post.contentHTML }} />}
           </ContentBox>
         </div>
-
       )}
     </>
   );

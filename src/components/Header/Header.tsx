@@ -13,7 +13,7 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState('');
   const { changeUser, removeAllUser } = useUserCookie();
-  const user = useUserStore((state) => state.user);
+  const { user, resetUser } = useUserStore((state) => state);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -48,6 +48,7 @@ function Header() {
   const handleClick = (name: string) => {
     if (name === 'Log Out') {
       removeAllUser();
+      router.replace('/');
     }
   };
 
