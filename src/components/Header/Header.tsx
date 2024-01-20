@@ -1,6 +1,6 @@
 'use client';
 
-import { NavbarMenu, NavbarMenuToggle, NavbarMenuItem, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link } from '@nextui-org/react';
+import { Avatar, Button, NavbarMenu, NavbarMenuToggle, NavbarMenuItem, Navbar, NavbarBrand, NavbarContent, NavbarItem, Link } from '@nextui-org/react';
 import { barlow } from 'src/fonts/fonts';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Logo from 'src/components/icons/Logo';
@@ -13,7 +13,7 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState('');
   const { changeUser, removeAllUser } = useUserCookie();
-  const { user, resetUser } = useUserStore((state) => state);
+  const { user } = useUserStore((state) => state);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -32,7 +32,17 @@ function Header() {
     const path = paths ? paths[1] : ' ';
     setCurrentPath(path);
   }, [pathname]);
+
   const HeaderProfile = dynamic(() => import('src/components/Header/HeaderProfile'), {
+    loading: () => (
+      <>
+        {user ? (
+          <Avatar className="w-[35px] h-[35px] cursor-pointer" isBordered color="default" src="https://images.unsplash.com/broken" />
+        ) : (
+          <Button color="primary" variant="flat">Sign In</Button>
+        )}
+      </>
+    ),
     ssr: false,
   });
 

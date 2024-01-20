@@ -1,4 +1,5 @@
-import { create } from 'zustand';
+import { create, StateCreator } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export interface User {
   id: number;
@@ -15,11 +16,19 @@ export interface UserStore {
   resetUser: () => void;
 }
 
-const useUserStore = create<UserStore>((set) => ({
+const useUserStore: StateCreator<UserStore> = (set) => ({
   user: null,
   changeAll: (data: UserStore['user']) => set({ user: data }),
   changeProperty: (data: any) => set((state) => ({ ...state, user: { ...state.user, ...data } })),
   resetUser: () => set({ user: null }),
-}));
+});
 
-export default useUserStore;
+const persistedUseUserStore = persist<UserStore>(
+  useUserStore,
+  {
+    name: 'userStore',
+    storage: createJSONStorage(() => sessionStorage),
+  },
+);
+
+export default create(persistedUseUserStore);

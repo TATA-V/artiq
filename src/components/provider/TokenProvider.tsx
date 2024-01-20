@@ -2,6 +2,7 @@
 
 import { useEffect, ReactNode } from 'react';
 import { useCookies } from 'react-cookie';
+import useUserStore from 'src/store/useUserStore';
 
 interface Props {
   children: ReactNode;
@@ -9,6 +10,7 @@ interface Props {
 
 function TokenProvider({ children } : Props) {
   const [cookies, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
+  const { changeAll } = useUserStore();
 
   const setAuthCookies = () => {
     setCookie('access_token', cookies.access_token, { path: '/', domain: `${process.env.NEXT_PUBLIC_DOMAIN}`, expires: new Date(Date.now() + 300 * 1000) });
@@ -24,6 +26,9 @@ function TokenProvider({ children } : Props) {
     setAuthCookies();
     if (!(cookies.access_token)) {
       removeAll();
+    }
+    if (cookies.user) {
+      changeAll(cookies.user);
     }
   }, []);
 
