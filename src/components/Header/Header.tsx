@@ -5,15 +5,17 @@ import { barlow } from 'src/fonts/fonts';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Logo from 'src/components/icons/Logo';
 import { useEffect, useState } from 'react';
-import useUserCookie from 'src/hook/useUserCookie';
+// import useUserCookie from 'src/hook/useUserCookie';
 import useUserStore from 'src/store/useUserStore';
 import dynamic from 'next/dynamic';
+import { useCookies } from 'react-cookie';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState('');
-  const { changeUser, removeAllUser } = useUserCookie();
-  const { user } = useUserStore((state) => state);
+  // const { changeUser, removeAllUser } = useUserCookie();
+  const [cookies, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
+  const { user, changeAll, resetUser } = useUserStore((state) => state);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -23,7 +25,8 @@ function Header() {
     const search = searchParams?.get('search');
     if (search) {
       const decoded = JSON.parse(Buffer.from(search, 'base64').toString('utf-8'));
-      changeUser(decoded);
+      changeAll(decoded);
+      setCookie('user', decoded);
     }
   }, []);
 
@@ -36,11 +39,7 @@ function Header() {
   const HeaderProfile = dynamic(() => import('src/components/Header/HeaderProfile'), {
     loading: () => (
       <>
-        {user ? (
-          <Avatar className="w-[35px] h-[35px] cursor-pointer" isBordered color="default" src="https://images.unsplash.com/broken" />
-        ) : (
-          <Button color="primary" variant="flat">Sign In</Button>
-        )}
+        {user && <Avatar className="w-[35px] h-[35px] cursor-pointer" isBordered color="default" src="https://images.unsplash.com/broken" />}
       </>
     ),
     ssr: false,
@@ -57,7 +56,10 @@ function Header() {
 
   const handleClick = (name: string) => {
     if (name === 'Log Out') {
-      removeAllUser();
+      removeCookie('user');
+      removeCookie('access_token');
+      removeCookie('refresh_token');
+      resetUser();
       router.replace('/');
     }
   };

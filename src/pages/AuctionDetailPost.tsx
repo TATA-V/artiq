@@ -9,7 +9,6 @@ import { usePostService } from 'src/services/usePostService';
 import styled from 'styled-components';
 import * as io from 'socket.io-client';
 import useUserStore from 'src/store/useUserStore';
-import useUserCookie from 'src/hook/useUserCookie';
 
 interface Props {
   postId: string;
@@ -18,14 +17,7 @@ interface Props {
 function AuctionDetailPost({ postId } : Props) {
   const [post, setPost] = useState<PostContent | null>(null);
   const { findOne, deleteOne } = usePostService();
-  // const { user } = useUserStore();
   const router = useRouter();
-  const { user, accessToken, refreshToken } = useUserCookie();
-  // const socket = io.connect('/ws/chats');
-
-  console.log('user:', user);
-  console.log('acc:', accessToken);
-  console.log('refr:', refreshToken);
 
   useEffect(() => {
     const fetchData = async () => {
