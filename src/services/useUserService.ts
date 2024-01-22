@@ -8,8 +8,8 @@ const useUserService = () => {
     return data;
   };
 
-  const findOne = async (postId: string) => {
-    const res = await fetch(`/api/users/${postId}`, {
+  const findOne = async (id: string) => {
+    const res = await fetch(`/api/users/${id}`, {
       method: 'GET',
       next: { revalidate: 300 },
     });
@@ -17,16 +17,18 @@ const useUserService = () => {
     return data;
   };
 
-  const deleteOne = async (postId: number) => {
-    await fetch(`/api/users/${postId}`, {
+  const deleteOne = async (id: number) => {
+    const res = await fetch(`/api/users/${id}`, {
       method: 'DELETE',
     });
+    const data = await res.json();
+    return data;
   };
 
-  const updataOne = async (post : { payload: any, postId: string }) => {
-    await fetch(`/api/users/${post.postId}`, {
+  const updataOne = async (user : { payload: any, postId: string }) => {
+    await fetch(`/api/users/${user.postId}`, {
       method: 'PATCH',
-      body: JSON.stringify(post.payload),
+      body: JSON.stringify(user.payload),
       headers: {
         'Content-Type': 'application/json',
       },
