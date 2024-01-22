@@ -1,10 +1,20 @@
-'use client';
+import { Spinner } from '@nextui-org/react';
+import dynamic from 'next/dynamic';
 
-import AuctionEdit from 'src/pages/AuctionEdit';
+import PathList from 'src/components/common/PathList';
 
 function AuctionEditPage() {
+  const UpdateEditor = dynamic(() => import('src/components/Editor/UpdateEditor'), {
+    loading: () => <div className="flex justify-center w-full"><Spinner /></div>,
+    ssr: false,
+  });
+
   return (
-    <AuctionEdit />
+    <>
+      <PathList />
+      <UpdateEditor />
+    </>
+
   );
 }
 

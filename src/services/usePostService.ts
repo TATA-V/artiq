@@ -1,4 +1,4 @@
-import { FindAll } from 'src/types/postType';
+import { IFindAll } from 'src/types/postType';
 
 export const usePostService = () => {
   const findAll = async () => {
@@ -25,7 +25,7 @@ export const usePostService = () => {
     });
   };
 
-  const insertOne = async (payload: FindAll) => {
+  const insertOne = async (payload: IFindAll) => {
     await fetch('/api/posts', {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -35,7 +35,7 @@ export const usePostService = () => {
     });
   };
 
-  const updataOne = async (post : { payload: FindAll, postId: string }) => {
+  const updataOne = async (post : { payload: IFindAll, postId: string }) => {
     await fetch(`/api/posts/${post.postId}`, {
       method: 'PATCH',
       body: JSON.stringify(post.payload),

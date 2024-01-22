@@ -20,7 +20,7 @@ function NewEditor() {
 
   const user = useUserStore((state) => state.user);
   const router = useRouter();
-  const { insertOne, updataOne } = usePostService();
+  const { insertOne } = usePostService();
 
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;

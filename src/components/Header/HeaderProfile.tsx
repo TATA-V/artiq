@@ -7,7 +7,7 @@ import { useCookies } from 'react-cookie';
 
 function HeaderProfile() {
   const router = useRouter();
-  const [_, __, removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
+  const [, , removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
 
   const { user, resetUser } = useUserStore((state) => state);
 

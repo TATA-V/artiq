@@ -1,4 +1,4 @@
-export interface Post {
+export interface IPost {
   id: number;
   userId: number;
   author: string;
@@ -8,7 +8,7 @@ export interface Post {
   category: string;
 }
 
-export interface PostContent {
+export interface IPostContent {
   id: number;
   userId: number | null;
   author: string | null;
@@ -19,7 +19,7 @@ export interface PostContent {
   category: string;
 }
 
-export interface FindAll {
+export interface IFindAll {
   userId: number;
   title: string;
   imgUrl: string | undefined;

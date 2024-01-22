@@ -1,8 +1,23 @@
 import AuctionDetailPost from 'src/pages/AuctionDetailPost';
+import PathList from 'src/components/common/PathList';
 
-function DetailPostPage({ params }: { params: { postId: string } }) {
+interface Props {
+  params: { postId: string }
+}
+
+async function DetailPostPage({ params: { postId } }: Props) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const res = await fetch(`${baseUrl}/posts/${postId}`, {
+    method: 'GET',
+    next: { revalidate: 300 },
+  });
+  const post = await res.json();
+
   return (
-    <AuctionDetailPost postId={params.postId} />
+    <>
+      <PathList />
+      <AuctionDetailPost post={post} />
+    </>
   );
 }
 

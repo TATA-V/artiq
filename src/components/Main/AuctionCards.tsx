@@ -1,22 +1,13 @@
-'use client';
-
 import { Card, CardHeader, CardBody, Image, Link } from '@nextui-org/react';
-import { useEffect, useState } from 'react';
-import { usePostService } from 'src/services/usePostService';
-import { Post } from 'src/types/postType';
+import { IPost } from 'src/types/postType';
 
-function AuctionCards() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const { findAll } = usePostService();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await findAll();
-      setPosts(data);
-      return data;
-    };
-    fetchData();
-  }, []);
+async function AuctionCards() {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const res = await fetch(`${baseUrl}/posts`, {
+    method: 'GET',
+    next: { revalidate: 300 },
+  });
+  const posts : IPost[] = await res.json();
 
   return (
     <div className="flex justify-center w-full">

@@ -8,6 +8,8 @@
     "camelcase": "off",
     "react/no-danger": "off",
     "consistent-return": "off",
-    "react/no-unstable-nested-components": "off"
+    "react/no-unstable-nested-components": "off",
+    "@next/next/no-async-client-component": "off",
+    "@next/next/no-img-element": "off"
   }
 }

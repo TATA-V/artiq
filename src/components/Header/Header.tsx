@@ -5,7 +5,6 @@ import { barlow } from 'src/fonts/fonts';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Logo from 'src/components/icons/Logo';
 import { useEffect, useState } from 'react';
-// import useUserCookie from 'src/hook/useUserCookie';
 import useUserStore from 'src/store/useUserStore';
 import dynamic from 'next/dynamic';
 import { useCookies } from 'react-cookie';
@@ -13,8 +12,7 @@ import { useCookies } from 'react-cookie';
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState('');
-  // const { changeUser, removeAllUser } = useUserCookie();
-  const [cookies, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
+  const [, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token', 'user']);
   const { user, changeAll, resetUser } = useUserStore((state) => state);
 
   const router = useRouter();
